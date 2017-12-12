@@ -22,34 +22,31 @@ if (!defined('PLUGIN_DIR'))
 if (!defined('PLUGIN_URL'))
 	define('PLUGIN_URL', WP_PLUGIN_URL . '/' . PLUGIN_NAME);
 
+/* load scripts on page head for js and css. Sets a variable plugin_url to the plugin url for use by client */
+
 add_action('wp_head', 'google_search_news_load_scripts', 0);
-  function google_search_news_load_scripts() {
-    wp_enqueue_style('gns-styles', PLUGIN_URL.'/css/newsForm.css', false, '1.0');
-	wp_register_script( 'gns-scripts',PLUGIN_URL . '/js/newsForm.js', array(), '1.0.0', false );
-  wp_localize_script( 'gns-scripts', 'pluginURL',array( 'plugin_url' =>PLUGIN_URL ) ); 
-	wp_enqueue_script( 'gns-scripts' );
-  }
+
+function google_search_news_load_scripts() {
+  wp_enqueue_style('gns-styles', PLUGIN_URL.'/css/newsForm.css', false, '1.0');
+  wp_register_script( 'gns-scripts',PLUGIN_URL . '/js/newsForm.js', array(), '1.0.0', false );
+  wp_localize_script( 'gns-scripts', 'GNS',array( 'plugin_url' =>PLUGIN_URL ) ); 
+  wp_enqueue_script( 'gns-scripts' );
+
+}
  
 
-  
+/* creates shortcode to insert into pages */  
 
+add_shortcode('googlenews', 'google_news_search_form');
 
- add_shortcode('googlenews', 'google_news_search_form');
 function google_news_search_form($atts) {
   
-	$formText = '<form id="searchnews" name="searchnewsForm">
-
-              <input type="text" id="searchTermText" />
-
-              <input type="button" value="Search" id="searchnewsSubmit" onclick="submitSearch()" />
-
-              <div id="searchOutput">
-
-
-              </div>
-';
- 
- 
-	return $formText;
+	$formText =  '<form id="searchnews" name="searchnewsForm">
+                <input type="text" id="searchTermText" />
+                <input type="button" value="Search" id="searchnewsSubmit" onclick="submitSearch()" />
+                <div id="searchOutput">
+                </div>
+                ';
+ return $formText;
 }
 

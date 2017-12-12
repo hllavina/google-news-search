@@ -1,6 +1,6 @@
 <?php
 
-/* Sends request to google news and returns result */
+/* This file sends request to google news and returns result. It is called by submitsearch client function */
 
 $searchTerm = $_GET["searchTerm"];
 $url = "http://news.google.com/news?q=".$searchTerm . "&output=rss";
@@ -9,8 +9,7 @@ $url = "http://news.google.com/news?q=".$searchTerm . "&output=rss";
 $xmlDoc = new DOMDocument();
 $xmlDoc->load($url);
 
-//get elements from "<channel>"
-// This code directly taken from example on w3 schools https://www.w3schools.com/php/php_ajax_rss_reader.asp 
+// from example on w3 schools https://www.w3schools.com/php/php_ajax_rss_reader.asp
 
 $channel=$xmlDoc->getElementsByTagName('channel')->item(0);
 $channel_title = $channel->getElementsByTagName('title')
@@ -21,7 +20,7 @@ $channel_desc = $channel->getElementsByTagName('description')
 ->item(0)->childNodes->item(0)->nodeValue;
 
 echo("<p><a href='" . $channel_link
-  . "'>" . $channel_title . "</a>");
+  . "' target='_new'>" . $channel_title . "</a>");
 echo("<br>");
 echo($channel_desc . "</p>");
 
